@@ -73,9 +73,9 @@ namespace {
 // Tests Factorial().
 
 TEST(module_name, test_name) {
-    // std::cout << "Hello world!" << std::endl;
-    // Google Test will also provide macros for assertions.
-    ASSERT_EQ(1+1, 2);
+  // std::cout << "Hello world!" << std::endl;
+  // Google Test will also provide macros for assertions.
+  ASSERT_EQ(1 + 1, 2);
 }
 
 // Tests factorial of negative numbers.
@@ -140,7 +140,7 @@ TEST(IsPrimeTest, Positive) {
   EXPECT_TRUE(IsPrime(23));
 }
 
-}  // namespace
+} // namespace
 
 // Step 3. Call RUN_ALL_TESTS() in main().
 //
@@ -153,8 +153,8 @@ TEST(IsPrimeTest, Positive) {
 // Did you notice that we didn't register the tests?  The
 // RUN_ALL_TESTS() macro magically knows about all the tests we
 // defined.  Isn't this convenient?
-int main(int argc, char** argv) {
-    ::testing::InitGoogleTest(&argc, argv);
+int main(int argc, char **argv) {
+  ::testing::InitGoogleTest(&argc, argv);
 
-    return RUN_ALL_TESTS();
+  return RUN_ALL_TESTS();
 }
