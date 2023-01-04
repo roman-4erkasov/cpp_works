@@ -36,7 +36,7 @@ template <typename Iterator>
 std::ostream& operator<<(std::ostream& os, const Page<Iterator>& page)
 {
     //std::ostream_iterator<int> out_it (os, "");
-    //std::copy(data.begin(), data.end(), out_it );
+    //std::copy(page.begin(), page.end(), out_it );
     bool is_begin=true;
     for(Iterator it=page.begin();it!=page.end();++it){
         if(is_begin) is_begin=false;
@@ -52,15 +52,15 @@ public:
     Paginator(Iterator begin, Iterator end, int page_size=2)
     :page_sz(page_size)
     {
-        auto ibeg=begin;
-        auto iend=std::next(ibeg, page_sz);
-        while(0<std::distance(iend,end)){
-            pages_.push_back(Page(ibeg,iend));
-            ibeg=iend;
-            iend=std::next(ibeg, page_sz);
-        }
-        if(0<std::distance(ibeg,end))
-            pages_.push_back(Page(ibeg,end));
+            auto ibeg=begin;
+            auto iend=std::next(ibeg, page_sz);
+            while(0<std::distance(iend,end)){
+                pages_.push_back(Page(ibeg,iend));
+                ibeg=iend;
+                iend=std::next(ibeg, page_sz);
+            }
+            if(0<std::distance(ibeg,end))
+                pages_.push_back(Page(ibeg,end));
     }
     auto begin() const {
         return pages_.begin();
