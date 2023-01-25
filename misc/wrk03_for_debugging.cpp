@@ -13,6 +13,7 @@ struct Query {
 Query ParseQuery(string text) {
     Query query;
     text.insert(0, " "s);
+    int prev_i = -1;
     for (size_t i = 0; i < text.size();) {
         if (text[i] == ' ') {
             string word = text.substr(i + 1, text.find(' ', i + 1) - i - 1);
@@ -22,8 +23,10 @@ Query ParseQuery(string text) {
                 is_minus = true;
             }
             (is_minus ? query.minus_words : query.plus_words).insert(word);
+	    prev_i = i;
             i += word.length();
         } else {
+	    prev_i = i;
             ++i;
         }
     }
