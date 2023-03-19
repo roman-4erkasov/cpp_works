@@ -5,6 +5,8 @@
 
 using namespace std;
 
+// g++ --std=c++17 wrk02_parsing.cpp -Wall -Werror -g
+
 /*vector<string_view> SplitIntoWordsView(string_view str) {
     vector<string_view> result;
     int64_t pos = str.find_first_not_of(" ");
@@ -23,24 +25,26 @@ vector<string_view> SplitIntoWordsView(string_view str) {
     vector<string_view> result;
     str.remove_prefix(
         std::min(
-            str.find_first_not_of(' '), 
-            str.size()
+            str.size(),
+            str.find_first_not_of(' ')
         )
     );
-    
+    //const int64_t pos_end = str.npos;
     while (0<str.size()) {
-        int64_t space = str.find(' ');
-        std::cout<<space<<std::endl;
-        
+        const int64_t space = str.find(' ');
         result.push_back(
             str.substr(0,space)
         );
-        //for(auto x: result) std::cout<<x<<" ";
-        //std::cout<<std::endl;
         str.remove_prefix(
             std::min(
-                str.find_first_not_of(' '), 
-                str.size()
+                str.size(),
+                str.find(' ')
+            )
+        );
+        str.remove_prefix(
+            std::min(
+                str.size(),
+                str.find_first_not_of(' ')
             )
         );
     }
