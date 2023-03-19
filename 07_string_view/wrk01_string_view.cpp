@@ -35,8 +35,10 @@ vector<string_view> SplitIntoWordsView(const string& str) {
     // 1
     int64_t pos = str.find_first_not_of(" ");
     // 2
+    std::cout << "2:" << pos << std::endl;
     const int64_t pos_end = str.npos;
     // 3
+    std::cout << "3:" << pos_end << std::endl;
     while (pos != pos_end) {
         // 4
         int64_t space = str.find(' ', pos);
