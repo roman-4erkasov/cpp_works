@@ -1,0 +1,54 @@
+
+
+import breeze.linalg._
+import breeze.numerics._
+import breeze.optimize._
+
+val X = DenseMatrix.rand(2000,3)
+val y = X * DenseVector(0.5, -0.1, 0.2)
+
+val J = new DiffFunction[DenseVector[Double]] {
+    def calculate(w: DenseVector[Double]) = {
+        val e = X*w-y
+        val loss = sum(e ^:^ 2.0) / (2 * X.rows)
+        val grad = (e.t * X) /:/ (2.0 * X.rows)
+        (loss, grad.t)
+    }
+}
+
+val optimizer = new LBFGS[DenseVector[Double]]()
+println(optimizer.minimize(J, DenseVector(0.0, 0.0, 0.0)))
+
+sbt package
+./spark-3.3.1-bin-hadoop3/bin/spark-submit --master local[2] --class "SimpleApp" task1/target/scala-2.12/simple-project_2.12-1.0.jar &> result.out
+
+
+
+import breeze.linalg._
+import breeze.numerics._
+import breeze.optimize._
+#import org.apache.spark.mllib.regression.LinearRegressionWithSGD
+import org.apache.spark.ml.regression.LinearRegression
+import org.apache.spark.ml.regression.LinearRegressionModel
+import org.apache.spark.ml.Pipeline
+import org.apache.spark.ml.feature.VectorAssembler
+
+val N = 100000
+val M = 3
+val n_iter = 100
+val step = 0.001
+val X = DenseMatrix.rand(N,M)
+val y = X * DenseVector(1.5, 0.3, -0.7)
+val data = DenseMatrix.horzcat(X, y.asDenseMatrix.t)
+val df = data(*, ::).iterator.map(x => (x(0),x(1),x(2),x(3))).toSeq.toDF("x1","x2","x3","y")
+val pipeline = new Pipeline().setStages(
+    Array(
+        new VectorAssembler()
+            .setInputCols(Array("x1","x2","x3"))
+            .setOutputCol("features"),
+        new LinearRegression().setLabelCol("y")
+    )
+)
+val model = pipeline.fit(df)
+val w = model.stages.last.asInstanceOf[LinearRegressionModel].coefficients
+println("w="+w)
